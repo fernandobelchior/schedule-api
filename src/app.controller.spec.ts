@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskController } from './task/task.controller';
-import { TaskService } from './task/task.service';
+import { TasksController } from './tasks/tasks.controller';
+import { TasksService } from './tasks/tasks.service';
 import { PrismaService } from './prisma/prisma.service';
 
 const mockPrismaService = {
@@ -14,13 +14,13 @@ const mockPrismaService = {
 };
 
 describe('TaskController', () => {
-  let controller: TaskController;
+  let controller: TasksController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [TaskController],
+      controllers: [TasksController],
       providers: [
-        TaskService,
+        TasksService,
         {
           provide: PrismaService,
           useValue: mockPrismaService,
@@ -28,7 +28,7 @@ describe('TaskController', () => {
       ],
     }).compile();
 
-    controller = module.get<TaskController>(TaskController);
+    controller = module.get<TasksController>(TasksController);
   });
 
   it('should be defined', () => {

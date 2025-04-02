@@ -3,7 +3,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 
-describe('TaskController (e2e)', () => {
+describe('TasksController (e2e)', () => {
     let app: INestApplication;
 
     beforeAll(async () => {
@@ -16,7 +16,7 @@ describe('TaskController (e2e)', () => {
         await app.init();
     });
 
-    it('/v1/task (GET) should return 200', async () => {
+    it('/v1/tasks (GET) should return 200', async () => {
         const res = await request(app.getHttpServer()).get('/v1/task');
         expect(res.statusCode).toBe(200);
         expect(Array.isArray(res.body)).toBe(true);

@@ -4,7 +4,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import {PrismaService} from "../prisma/prisma.service";
 
 @Injectable()
-export class TaskService {
+export class TasksService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateTaskDto) {
@@ -65,7 +65,7 @@ export class TaskService {
   }
 
   async update(id: string, dto: UpdateTaskDto) {
-    // Optional: check if task exists first
+    // Optional: check if tasks exists first
     const task = await this.prisma.task.findUnique({ where: { id } });
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
@@ -86,4 +86,11 @@ export class TaskService {
 
     return this.prisma.task.delete({ where: { id } });
   }
+
+  async findBySchedule(scheduleId: string) {
+    return this.prisma.task.findMany({
+      where: { scheduleId },
+    });
+  }
+
 }

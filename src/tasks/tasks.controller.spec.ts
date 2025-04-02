@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskController } from './task.controller';
-import { TaskService } from './task.service';
+import { TasksController } from './tasks.controller';
+import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskType } from '@prisma/client';
 
 describe('TaskController', () => {
-  let controller: TaskController;
-  let service: TaskService;
+  let controller: TasksController;
+  let service: TasksService;
 
   const mockTasks = [
     { id: 'uuid-1', type: 'work' },
@@ -23,17 +23,17 @@ describe('TaskController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [TaskController],
+      controllers: [TasksController],
       providers: [
         {
-          provide: TaskService,
+          provide: TasksService,
           useValue: mockTaskService,
         },
       ],
     }).compile();
 
-    controller = module.get<TaskController>(TaskController);
-    service = module.get<TaskService>(TaskService);
+    controller = module.get<TasksController>(TasksController);
+    service = module.get<TasksService>(TasksService);
   });
 
   it('should be defined', () => {
@@ -49,10 +49,10 @@ describe('TaskController', () => {
   });
 
   describe('createV1', () => {
-    it('should create a task', async () => {
+    it('should create a tasks', async () => {
       const dto: CreateTaskDto = {
         accountId: 1,
-        scheduleId: 'schedule-1',
+        scheduleId: 'schedules-1',
         startTime: '2025-04-04T10:00:00Z',
         duration: 30,
         type: TaskType.work,
@@ -65,7 +65,7 @@ describe('TaskController', () => {
   });
 
   describe('update', () => {
-    it('should update a task', async () => {
+    it('should update a tasks', async () => {
       const dto: UpdateTaskDto = { type: TaskType.break };
       const result = await controller.update('uuid-1', dto);
 
@@ -75,7 +75,7 @@ describe('TaskController', () => {
   });
 
   describe('delete', () => {
-    it('should delete a task', async () => {
+    it('should delete a tasks', async () => {
       const result = await controller.remove('uuid-1');
 
       expect(result).toEqual({ id: 'uuid-1', deleted: true });

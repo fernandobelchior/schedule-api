@@ -1,0 +1,53 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: schedule_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/schedule_test
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: ⚙️ Generate Prisma client
+        run: npx prisma generate
+
+      - name: 🧱 Run migrations
+        run: npx prisma migrate deploy
+
+      - name: 🧪 Run unit tests
+        run: npm run test
+
+      - name: 🚀 Run e2e tests
+        run: npm run test:e2e

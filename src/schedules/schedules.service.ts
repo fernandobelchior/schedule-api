@@ -4,7 +4,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import {UpdateScheduleDto} from "./dto/update-schedule.dto";
 
 @Injectable()
-export class ScheduleService {
+export class SchedulesService {
   constructor(private prisma: PrismaService) {
   }
 
@@ -33,5 +33,15 @@ export class ScheduleService {
     return this.prisma.schedule.delete({where: {id}});
   }
 
-  async update(id: string, dto: UpdateScheduleDto) {}
+  async update(id: string, dto: UpdateScheduleDto) {
+    const schedule = await this.prisma.schedule.findUnique({ where: { id } });
+    if (!schedule) {
+      throw new NotFoundException(`Schedule with ID ${id} not found`);
+    }
+
+    return this.prisma.schedule.update({
+      where: { id },
+      data: dto,
+    });
+  }
 }

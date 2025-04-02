@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TaskModule } from './task/task.module';
+import { TasksModule } from './tasks/tasks.module';
 import { PrismaService } from './prisma/prisma.service';
-import { ScheduleModule } from './schedule/schedule.module';
+import { SchedulesModule } from './schedules/schedules.module';
 import { ExistsRule } from "./common/validators/exists.rule";
 
 @Module({
-  imports: [TaskModule, ScheduleModule],
+  imports: [TasksModule, SchedulesModule],
   controllers: [AppController],
   providers: [AppService, PrismaService, ExistsRule],
   exports: [PrismaService],
