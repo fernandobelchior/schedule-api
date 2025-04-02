@@ -25,10 +25,19 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+Node: 22.14.0
+
+npm: 11.2.0
+
+postgresql: 16
+
 ## Project setup
 
 ```bash
+$ docker-compose up -d
 $ npm install
+$ npx prisma migrate dev --name init
+
 ```
 
 ## Compile and run the project

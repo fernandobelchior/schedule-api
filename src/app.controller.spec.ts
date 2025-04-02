@@ -1,22 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TaskController } from './task/task.controller';
+import { TaskService } from './task/task.service';
+import { PrismaService } from './prisma/prisma.service';
 
-describe('AppController', () => {
-  let appController: AppController;
+const mockPrismaService = {
+  task: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+};
+
+describe('TaskController', () => {
+  let controller: TaskController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [TaskController],
+      providers: [
+        TaskService,
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
+      ],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    controller = module.get<TaskController>(TaskController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 });
