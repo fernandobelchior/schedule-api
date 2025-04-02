@@ -22,9 +22,7 @@ export class SchedulesController {
   @Get()
   @Version('1')
   findAll() {
-    console.log('🔥 Reached controller');
-    return [{ hello: 'world' }];
-    //return this.schedulesService.findAll();
+    return this.schedulesService.findAll();
   }
 
   @Get(':id')
