@@ -15,7 +15,6 @@ export class SchedulesController {
   @Version('1')
   create(
       @Body() dto: CreateScheduleDto){
-    console.log(123);
     return this.schedulesService.create(dto);
   }
 
