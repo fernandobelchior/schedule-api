@@ -2,6 +2,7 @@ import {Controller, Get, Post, Body, Put, Patch, Param, Delete, Version, ParseUU
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 
 @Controller('tasks')
 export class TasksController {
@@ -15,6 +16,8 @@ export class TasksController {
 
   @Get()
   @Version('1')
+  @ApiOperation({ summary: 'Get all tasks' })
+  @ApiResponse({ status: 200, description: 'Returns a list of tasks.' })
   findAllV1() {
     return this.tasksService.findAll();
   }
