@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    name: Pipeline
     services:
       postgres:
         image: postgres:15
@@ -45,6 +45,9 @@ jobs:
 
       - name: 🧱 Run migrations (reset)
         run: npx prisma migrate reset --force --skip-seed
+
+      - name: Seed database
+        run: npm run seed
 
       - name: 🧪 Run unit tests
         run: npm run test

@@ -1,7 +1,5 @@
-# Leonardo.ai Schedule API 
+# Schedule API 
 ### NestJS + Prisma + PostgreSQL
-
-[Requirements](./challenge.pdf)
 
 ---
 
@@ -15,6 +13,7 @@
 - Full unit and e2e test coverage with Jest + Supertest
 - Docker-ready PostgreSQL integration
 - `agent` and `account` tables included.
+- Swagger API docs at `/api-docs`
 
 ---
 
@@ -108,13 +107,18 @@ npm install
 npx prisma migrate dev --name init
 ```
 
-### 5. Start the application
+### 5. Seed the database
+```bash
+npm run seed
+```
+
+### 6. Start the application
 
 ```bash
 npm run start:dev
 ```
 
-### 6. Run tests locally or via CI pipeline
+### 7. Run tests locally or via CI pipeline
 
 #### For local
 ```bash
