@@ -1,107 +1,160 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Leonardo.ai Schedule API 
+### NestJS + Prisma + PostgreSQL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[Requirements](./challenge.pdf)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## ✨ Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Full CRUD for `tasks` and `schedules`
+- UUID primary keys, relational integrity with Prisma
+- Custom validation decorators (e.g. `@Exists()` for referential checks)
+- RESTful resource design with versioning (`/v1/...`)
+- Global validation pipe with `class-validator`
+- Full unit and e2e test coverage with Jest + Supertest
+- Docker-ready PostgreSQL integration
+- `agent` and `account` tables included.
 
-Node: 22.14.0
+---
 
-npm: 11.2.0
+## Assumptions
+- A task must be in the timespan of a schedule, otherwise reject the request
+- `tasks.duration` field is stored in minutes.
+- Only allow to add a task if Schedule, Account, Agent exists (implemented via @ExistsRule decorator)
 
-postgresql: 16
+___
 
-## Project setup
+## 📚 Potential Enhancements (Interview Discussion Points)
+
+> These are areas intentionally left out to focus on core structure — and serve as great discussion starters.
+
+### Error Handling
+- Improve error handling to avoid exposing server errors
+- Check if a cascade record can be deleted before execute the delete command in db itself.
+- Example: a schedule cannot be deleted if it has at least one task, to avoid orphan rows.
+
+### 🔢 Pagination Decorator
+
+- Replace current DTO usage with a custom `@Paginated()` decorator
+- Automatically inject and validate `page`, `perPage` with defaults
+- Great chance to demonstrate NestJS metaprogramming + DRY design
+
+### 🔐 Authentication & Authorization
+
+- Add JWT-based auth using Passport module
+- Add guards (`@UseGuards(AuthGuard)`) to protect endpoints
+- Optionally enforce account ownership on resources
+
+### ⚡ Soft deleting
+
+- Use `is_deleted` field across DB tables to avoid hard-deletion
+
+### ⚡ Rate Limiting
+
+- Use NestJS `@nestjs/throttler` to apply global/per-user limits
+- Supports distributed environments with Redis backend
+
+### ✨ Swagger/OpenAPI Documentation
+
+- Add `@nestjs/swagger` decorators to generate interactive docs
+- Includes models, parameters, and error response types
+
+### ✨ Add more test cases (Unit & E2E)
+- Targeting at least 70% coverage
+- Generate a Code Coverage report
+
+### 🚀 K8s deployment
+- Build a GitHub action to deploy in a k8s cluster and using helm.
+- Happy to discuss other options.
+
+### 🌀 Caching Layer
+
+- Use Redis to cache `GET` endpoints for better performance
+- Add a cache invalidation strategy tied to updates/deletes
+
+---
+
+
+# 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 22+
+- Docker + Docker Compose
+- `npm`
+
+### 1. Start PostgreSQL with Docker
 
 ```bash
-$ docker-compose up -d
-$ npm install
-$ npx prisma migrate dev --name init
-
+docker-compose up -d
 ```
 
-## Compile and run the project
+### 2. Set up environment variables
+
+Create a `.env` file at the root (copy .env.dist):
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/schedule
+```
+
+### 3. Install dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 4. Run database migrations
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npx prisma migrate dev --name init
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 5. Start the application
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 6. Run tests locally or via CI pipeline
 
-## Resources
+#### locally
+```bash
+# Unit tests
+npm run test
 
-Check out a few resources that may come in handy when working with NestJS:
+# E2E tests
+npm run test:e2e
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 🌐 API Overview
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Method | Endpoint                  | Description               |
+| ------ | ------------------------- | ------------------------- |
+| GET    | `/v1/schedules`           | List all schedules        |
+| POST   | `/v1/schedules`           | Create new schedule       |
+| PATCH  | `/v1/schedules/:id`       | Update schedule by ID     |
+| DELETE | `/v1/schedules/:id`       | Delete schedule by ID     |
+| GET    | `/v1/schedules/:id/tasks` | List tasks for a schedule |
+| GET    | `/v1/tasks`               | List all tasks            |
+| POST   | `/v1/tasks`               | Create new task           |
+| PATCH  | `/v1/tasks/:id`           | Update task               |
+| DELETE | `/v1/tasks/:id`           | Delete task               |
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## ✨ Architectural Highlights
 
-## License
+- **SOLID Principles**: Logic is cleanly separated into services, DTOs, and validation layers.
+- **Reusable Validation**: Includes a custom `@Exists()` validator that checks referential integrity (e.g., `accountId`, `scheduleId`).
+- **Versioned Routes**: Easy future-proofing with URI-based versioning (`/v1/...`).
+- **Testability**: Designed for both unit testing and e2e testing using DI and mocks.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 🙌 Contact
+
+Built by Fernando Belchior as part of a job application to Leonardo.ai
+Feel free to reach out to discuss architecture, improvements, or scaling plans.
