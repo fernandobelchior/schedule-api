@@ -25,11 +25,9 @@
 
 ___
 
-## 📚 Potential Enhancements (Interview Discussion Points)
+## 📚 Potential Enhancements
 
-> These are areas intentionally left out to focus on core structure — and serve as great discussion starters.
-
-### Error Handling
+### 🌀 Error Handling
 - Improve error handling to avoid exposing server errors
 - Check if a cascade record can be deleted before execute the delete command in db itself.
 - Example: a schedule cannot be deleted if it has at least one task, to avoid orphan rows.
@@ -104,7 +102,7 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/schedule
 npm install
 ```
 
-### 4. Run database migrations
+### 4. Run database migrations (for local dev)
 
 ```bash
 npx prisma migrate dev --name init
@@ -118,7 +116,7 @@ npm run start:dev
 
 ### 6. Run tests locally or via CI pipeline
 
-#### locally
+#### For local
 ```bash
 # Unit tests
 npm run test
