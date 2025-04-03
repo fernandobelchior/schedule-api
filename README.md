@@ -62,7 +62,7 @@ ___
 - Generate a Code Coverage report
 
 ### 🚀 K8s deployment
-- Build a GitHub action to deploy in a k8s cluster and using helm.
+- Build a GitHub action to deploy in a k8s cluster using helm.
 - Happy to discuss other options.
 
 ### 🌀 Caching Layer
