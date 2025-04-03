@@ -155,8 +155,3 @@ npm run test:e2e
 - **Testability**: Designed for both unit testing and e2e testing using DI and mocks.
 
 ---
-
-## 🙌 Contact
-
-Built by Fernando Belchior as part of a job application to Leonardo.ai
-Feel free to reach out to discuss architecture, improvements, or scaling plans.
