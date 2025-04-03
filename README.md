@@ -14,6 +14,7 @@
 - Docker-ready PostgreSQL integration
 - `agent` and `account` tables included.
 - Swagger API docs at `/api-docs`
+- CI pipeline with Unit and e2e testing.
 
 ---
 
